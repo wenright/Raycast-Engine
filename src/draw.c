@@ -1,6 +1,16 @@
 #include "include/draw.h"
 
 void drawPoint (SDL_Surface* screen, Uint32 x, Uint32 y, Uint32 color) {
+	if (x > SCREEN_WIDTH)
+		x = SCREEN_WIDTH;
+	else if (x < 0)
+		x = 0;
+
+	if (y > SCREEN_HEIGHT)
+		y = SCREEN_HEIGHT;
+	else if (y < 0)
+		y = 0;
+	
 	SDL_Rect r;
 	r.x = x;
 	r.y = y;

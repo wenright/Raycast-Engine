@@ -1,5 +1,19 @@
 #include "include/render.h"
 
+void renderSky () {
+	//Clear the screen
+	SDL_FillRect(screen, NULL, RGB_SkyBlue);
+}
+
+void renderFloor () {
+	SDL_Rect r;
+	r.x = 0;
+	r.y = MIDDLE_Y + posZ;
+	r.w = SCREEN_WIDTH;
+	r.h = MIDDLE_Y - posZ + 1;
+	SDL_FillRect(screen, &r, RGB_Grey);
+}
+
 void renderWalls () {
 	//For each pixel on the x axis
 	for (int x = 0; x < SCREEN_WIDTH; x++) {
@@ -82,15 +96,15 @@ void renderWalls () {
 
 		//Calculate lowest and heighest points to be drawn
 		int start = -wallHeight / 2 + SCREEN_HEIGHT / 2;
-		if (start < 0)	
-			start = 0;
+		if (start < -posZ)
+			start = -posZ;
 
 		int end = wallHeight / 2 + SCREEN_HEIGHT / 2;
-		if (end >= SCREEN_HEIGHT)	
-			end = SCREEN_HEIGHT - 1;
+		if (end > SCREEN_HEIGHT - posZ)
+			end = SCREEN_HEIGHT - posZ - 1;
 
 		if (!textured) {
-			//Renders flat textures
+			//Renders single colors
 			Uint32 color;
 			switch(worldMap[mapX][mapY]) {
 				case 1: color = RGB_Red;	break;
@@ -146,7 +160,7 @@ void renderWalls () {
 					color = (color >> 1) & 8355711;
 
 				//Draw the individual pixel. May be faster if a buffer is used
-				drawPoint(screen, x, y, color);
+				drawPoint(screen, x, y + posZ, color);
 			}
 
 			//Unlock the previously locked fram

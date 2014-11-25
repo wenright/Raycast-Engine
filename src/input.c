@@ -48,14 +48,20 @@ int handleInput () {
 						break;
 				}
 				break;
-			case SDL_MOUSEMOTION:;
-				double newRotateSpeed = (double)event.motion.xrel * -rotateSpeed;
-				double oldDirX = dirX;
-				dirX = dirX * cos(newRotateSpeed) - dirY * sin(newRotateSpeed);
-				dirY = oldDirX * sin(newRotateSpeed) + dirY * cos(newRotateSpeed);
-				double oldPlaneX = planeX;
-				planeX = planeX * cos(newRotateSpeed) - planeY * sin(newRotateSpeed);
-				planeY = oldPlaneX * sin(newRotateSpeed) + planeY * cos(newRotateSpeed);
+			case SDL_MOUSEMOTION:
+				if (event.motion.xrel) {
+					double newRotateSpeed = (double)event.motion.xrel * -rotateSpeedX;
+					double oldDirX = dirX;
+					dirX = dirX * cos(newRotateSpeed) - dirY * sin(newRotateSpeed);
+					dirY = oldDirX * sin(newRotateSpeed) + dirY * cos(newRotateSpeed);
+					double oldPlaneX = planeX;
+					planeX = planeX * cos(newRotateSpeed) - planeY * sin(newRotateSpeed);
+					planeY = oldPlaneX * sin(newRotateSpeed) + planeY * cos(newRotateSpeed);
+				}
+
+				if ((event.motion.yrel > 0 && posZ > -750) || (event.motion.yrel < 0 && posZ < 750))
+					posZ += event.motion.yrel * -rotateSpeedY;
+				
 				SDL_WarpMouseInWindow(window, MIDDLE_X, MIDDLE_Y);
 				break;
 			case SDL_QUIT:

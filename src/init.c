@@ -5,19 +5,19 @@ int init_SDL() {
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
-	else {
-		//Create window
-		window = SDL_CreateWindow("Raycaster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
-		if(window == NULL) {
-			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-			return false;
-		}
 
-		//Get window surface
-		screen = SDL_GetWindowSurface(window);
-		if (screen == NULL)
-			printf("Failed to set screen. SDL error: %s\n", SDL_GetError());
+	//Create window
+	window = SDL_CreateWindow("Raycaster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+		SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
+	if(window == NULL) {
+		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		return false;
 	}
+
+	//Get window surface
+	screen = SDL_GetWindowSurface(window);
+	if (screen == NULL)
+		printf("Failed to set screen. SDL error: %s\n", SDL_GetError());
 
 	//Hide/lock cursor
 	SDL_ShowCursor(false);

@@ -1,9 +1,9 @@
 #ifndef MAPGEN_H_INCLUDED
 #define MAPGEN_H_INCLUDED
 
-	#include <stdlib.h>
-	#include "variables.h"
+#include <stdlib.h>
+#include "variables.h"
 
-	void generateMap ();
+void generateMap ();
 
 #endif
