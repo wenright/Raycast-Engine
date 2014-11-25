@@ -56,7 +56,7 @@ int handleInput () {
 				double oldPlaneX = planeX;
 				planeX = planeX * cos(newRotateSpeed) - planeY * sin(newRotateSpeed);
 				planeY = oldPlaneX * sin(newRotateSpeed) + planeY * cos(newRotateSpeed);
-				SDL_WarpMouseInWindow(window, 0, 0);
+				SDL_WarpMouseInWindow(window, MIDDLE_X, MIDDLE_Y);
 				break;
 			case SDL_QUIT:
 				return false;

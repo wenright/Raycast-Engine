@@ -16,5 +16,8 @@ void generateMap () {
 		for (int j = 1; j < MAP_HEIGHT - 1; ++j)
 			if (rand() % 2)
 				if (rand() % 2)
-					worldMap[i][j] = (rand() % NUM_TEXTURES);
+					worldMap[i][j] = rand() % (NUM_TEXTURES + 1);
+
+	//Make sure that the position the player is at is empty
+	worldMap[(int)posX][(int)posY] = 0;
 }

@@ -7,7 +7,7 @@ int init_SDL() {
 	}
 	else {
 		//Create window
-		window = SDL_CreateWindow("Raycaster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED | SDL_WINDOW_BORDERLESS);
+		window = SDL_CreateWindow("Raycaster", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_INPUT_GRABBED);
 		if(window == NULL) {
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			return false;
