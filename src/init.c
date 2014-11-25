@@ -1,4 +1,4 @@
-#include "init.h"
+#include "include/init.h"
 
 int init_SDL() {
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0) {

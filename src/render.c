@@ -1,4 +1,4 @@
-#include "render.h"
+#include "include/render.h"
 
 void renderWalls () {
 	//For each pixel on the x axis

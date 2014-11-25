@@ -1,4 +1,4 @@
-#include "draw.h"
+#include "include/draw.h"
 
 void drawPoint (SDL_Surface* screen, Uint32 x, Uint32 y, Uint32 color) {
 	SDL_Rect r;

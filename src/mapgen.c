@@ -1,4 +1,4 @@
-#include "mapgen.h"
+#include "include/mapgen.h"
 
 void generateMap () {
 	//Generate borders

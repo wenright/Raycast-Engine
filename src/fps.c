@@ -1,4 +1,4 @@
-#include "fps.h"
+#include "include/fps.h"
 
 //Current and previous frame time
 double curTime = 0, prevTime = 0;

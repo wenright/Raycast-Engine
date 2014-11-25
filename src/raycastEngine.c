@@ -1,4 +1,4 @@
-#include "raycastEngine.h"
+#include "include/raycastEngine.h"
 
 int main(int argc, char* args[]) {
 	//Initialize SDL and media files
