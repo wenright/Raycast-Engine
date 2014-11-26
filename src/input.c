@@ -9,19 +9,19 @@ int handleInput () {
 				switch( event.key.keysym.sym ){
 					case SDLK_LEFT:
 					case 'a':
-						moveY = -1;
+						moveLeft = true;
 						break;
 					case 'd':
 					case SDLK_RIGHT:
-						moveY = 1;
+						moveRight = true;
 						break;
 					case 'w':
 					case SDLK_UP:
-						moveX = 1;
+						moveFwd = true;
 						break;
 					case 's':
 					case SDLK_DOWN:
-						moveX = -1;
+						moveBck = true;
 						break;
 					default:
 						break;
@@ -31,15 +31,19 @@ int handleInput () {
 				switch( event.key.keysym.sym ){
 					case SDLK_LEFT:
 					case 'a':
+						moveLeft = false;
+						break;
 					case 'd':
 					case SDLK_RIGHT:
-						moveY = 0;
+						moveRight = false;
 						break;
 					case 'w':
 					case SDLK_UP:
+						moveFwd = false;
+						break;
 					case 's':
 					case SDLK_DOWN:
-						moveX = 0;
+						moveBck = false;
 						break;
 					case SDLK_ESCAPE:
 						return false;
@@ -77,9 +81,18 @@ int handleInput () {
 
 void movePlayer (double deltaTime) {
 	//Move forward/backward
-	if (moveX) {
-		double moveStepX = moveX * dirX * deltaTime * speed;
-		double moveStepY = moveX * dirY * deltaTime * speed;
+	if (moveFwd) {
+		double moveStepX = dirX * deltaTime * speed;
+		double moveStepY = dirY * deltaTime * speed;
+
+		if (!worldMap[(int)(posX + moveStepX)][(int)posY])
+			posX += moveStepX;
+		if (!worldMap[(int)(posX)][(int)(posY + moveStepY)])
+			posY += moveStepY;
+	}
+	if (moveBck) {
+		double moveStepX = -dirX * deltaTime * speed;
+		double moveStepY = -dirY * deltaTime * speed;
 
 		if (!worldMap[(int)(posX + moveStepX)][(int)posY])
 			posX += moveStepX;
@@ -87,10 +100,19 @@ void movePlayer (double deltaTime) {
 			posY += moveStepY;
 	}
 	//Strafe
-	if (moveY) {
+	if (moveRight) {
 		//Find perp. vector by switching x and y, and negating one
-		double moveStepX = moveY * dirY * deltaTime * speed;
-		double moveStepY = moveY * -dirX * deltaTime * speed;
+		double moveStepX = dirY * deltaTime * speed;
+		double moveStepY = -dirX * deltaTime * speed;
+
+		if (!worldMap[(int)(posX + moveStepX)][(int)posY])
+			posX += moveStepX;
+		if (!worldMap[(int)(posX)][(int)(posY + moveStepY)])
+			posY += moveStepY;
+	}
+	if (moveLeft) {
+		double moveStepX = -dirY * deltaTime * speed;
+		double moveStepY = dirX * deltaTime * speed;
 
 		if (!worldMap[(int)(posX + moveStepX)][(int)posY])
 			posX += moveStepX;

@@ -3,12 +3,12 @@
 
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include "variables.h"
 #include "init.h"
 #include "input.h"
 #include "draw.h"
 #include "render.h"
 #include "fps.h"
-#include "variables.h"
 #include "mapgen.h"
 
 int worldMap[MAP_WIDTH][MAP_HEIGHT];
@@ -16,7 +16,7 @@ int worldMap[MAP_WIDTH][MAP_HEIGHT];
 //Initial player position
 double posX = 22.5, posY = 12.5, posZ = 0;
 //Player movement direction vector
-int moveX = 0, moveY = 0;
+int moveLeft = false, moveRight = false, moveFwd = false, moveBck = false;
 //Player vector variables
 double dirX = -1.0, dirY = 0.0, planeX = 0.0, planeY = 0.66;
 //Player movement speed

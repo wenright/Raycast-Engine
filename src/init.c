@@ -19,6 +19,17 @@ int init_SDL() {
 	if (screen == NULL)
 		printf("Failed to set screen. SDL error: %s\n", SDL_GetError());
 
+	if (TTF_Init() != 0) {
+		printf("TTF could not load, %s\n", SDL_GetError());
+		return false;
+	}
+
+   	font = TTF_OpenFont("fonts/FreeSans.ttf", 16);
+	if (font == NULL) {
+		printf("Failed to initialize font, Error: %s\n", SDL_GetError());
+		return false;
+	}
+
 	//Hide/lock cursor
 	SDL_ShowCursor(false);
 	SDL_SetRelativeMouseMode(true);
@@ -55,6 +66,9 @@ void close_SDL() {
 	//Destroy window
 	SDL_DestroyWindow(window);
 	window = NULL;
+
+	//Exit SDL_ttf
+	TTF_Quit();
 
 	//Quit SDL subsystems
 	SDL_Quit();

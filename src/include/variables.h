@@ -2,6 +2,7 @@
 #define VARIABLES_H_INCLUDED
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #define RGB_Yellow 16120320
 #define RGB_Green 64000
@@ -36,7 +37,7 @@ extern int worldMap[MAP_WIDTH][MAP_HEIGHT];
 extern double posX, posY, posZ;
 
 //Player movement direction vector
-extern int moveX, moveY;
+extern int moveLeft, moveRight, moveFwd, moveBck;
 
 //Player vector variables
 extern double dirX, dirY, planeX, planeY;
@@ -52,5 +53,11 @@ extern SDL_Surface* screen;
 
 //The image we will load and show on the screen
 extern SDL_Surface* textureSource[NUM_TEXTURES];
+
+//Font used for FPS Debug
+extern TTF_Font* font;
+
+//Surface that font will be rendered onto
+extern SDL_Surface* text;
 
 #endif
