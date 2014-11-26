@@ -2,6 +2,7 @@
 #define INIT_H_INCLUDED
 
 #include "variables.h"
+#include "draw.h"
 
 //Starts up SDL and creates window
 int init_SDL();

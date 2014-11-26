@@ -54,6 +54,9 @@ extern SDL_Surface* screen;
 //The image we will load and show on the screen
 extern SDL_Surface* textureSource[NUM_TEXTURES];
 
+//The array of pixels for each of the textures, so they don't have to be calcuated each frame
+extern Uint32 pixelArray[NUM_TEXTURES][TEXTURE_SIZE][TEXTURE_SIZE];
+
 //Font used for FPS Debug
 extern TTF_Font* font;
 

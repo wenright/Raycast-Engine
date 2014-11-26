@@ -14,9 +14,10 @@ void renderFloor () {
 	SDL_FillRect(screen, &r, RGB_Grey);
 }
 
+// ~85% of execution time spent here
 void renderWalls () {
 	//For each pixel on the x axis
-	for (int x = 0; x < SCREEN_WIDTH; x++) {
+	for (int x = 0; x < SCREEN_WIDTH; ++x) {
 		double screenCoordinate = 2 * x / (double)SCREEN_WIDTH - 1;
 		double rayPosX = posX;
 		double rayPosY = posY;
@@ -119,7 +120,7 @@ void renderWalls () {
 				color = color / 2;
 
 			//Draw vertical line
-			drawLine (screen, x, start, end, color);
+			drawLine (x, start, end, color);
 		}
 		else {
 			//Calculates how far along the wall this ray has hit (for use w/ texture)
@@ -153,14 +154,15 @@ void renderWalls () {
 					* TEXTURE_SIZE) / wallHeight) / 256;
 
 				//Pick color from pixel array
-				Uint32 color = getPixel(textureSource[textureIndex], textureX, textureY);
+				//Uint32 color = getPixel(textureSource[textureIndex], textureX, textureY);
+				Uint32 color = pixelArray[textureIndex][textureX][textureY];
 
 				//Darken colors on one side of wall, gives a lit effect
 				if (nsWall)
 					color = (color >> 1) & 8355711;
 
 				//Draw the individual pixel. May be faster if a buffer is used
-				drawPoint(screen, x, y + posZ, color);
+				drawPoint(x, y + posZ, color);
 			}
 
 			//Unlock the previously locked fram

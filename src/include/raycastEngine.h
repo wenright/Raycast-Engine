@@ -2,6 +2,7 @@
 #define RAYCASTENGINE_H_INCLUDED
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include <stdio.h>
 #include "variables.h"
 #include "init.h"
@@ -30,5 +31,8 @@ SDL_Surface* screen;
 
 //The image we will load and show on the screen
 SDL_Surface* textureSource[NUM_TEXTURES];
+
+//Te array of pixels for each of the textures, so they don't have to be calcuated each frame
+Uint32 pixelArray[NUM_TEXTURES][TEXTURE_SIZE][TEXTURE_SIZE];
 
 #endif

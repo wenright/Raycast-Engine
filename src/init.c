@@ -13,7 +13,6 @@ int init_SDL() {
 		printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
-
 	//Get window surface
 	screen = SDL_GetWindowSurface(window);
 	if (screen == NULL)
@@ -51,6 +50,14 @@ int loadMedia() {
 		}
 
 		free(imagePath);
+	}
+
+	for (int t = 0; t < NUM_TEXTURES; ++t) {
+		for (int x = 0; x < TEXTURE_SIZE; ++x) {
+			for (int y = 0; y < TEXTURE_SIZE; ++y) {
+				pixelArray[t][x][y] = getPixel(textureSource[t], x, y);
+			}
+		}
 	}
 
 	return true;
