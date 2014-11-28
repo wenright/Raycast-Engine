@@ -4,7 +4,7 @@ int main(int argc, char* args[]) {
 	if (!init_SDL() || !loadMedia())
 		return 1;
 
-	generateMap ();
+	generateRandomMap();
 
 	while (handleInput ()) {
 		renderSky ();

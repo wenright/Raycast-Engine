@@ -4,6 +4,6 @@
 #include <stdlib.h>
 #include "variables.h"
 
-void generateMap ();
+void generateRandomMap ();
 
 #endif

@@ -26,6 +26,7 @@
 
 #define NUM_TEXTURES 4
 #define TEXTURE_SIZE 64
+#define TEXTURE_SIZE_BINARY (int)log2(TEXTURE_SIZE)
 
 //Whether or to use textures when rendering
 #define textured true

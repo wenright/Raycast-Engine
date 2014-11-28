@@ -2,7 +2,7 @@
 
 void renderSky () {
 	//Clear the screen
-	SDL_FillRect(screen, NULL, RGB_SkyBlue);
+	SDL_FillRect(screen, NULL, RGB_Grey);
 }
 
 void renderFloor () {
@@ -126,9 +126,9 @@ void renderWalls () {
 			//Calculates how far along the wall this ray has hit (for use w/ texture)
 			double wallX = 0.0;
 			if (nsWall)
-				wallX = rayPosX + ((mapY - rayPosY + (1 - stepY) / 2) / rayDirY) * rayDirX;
+				wallX = rayPosX + ((mapY - rayPosY + ((1 - stepY) >> 1)) / rayDirY) * rayDirX;
 			else
-				wallX = rayPosY + ((mapX - rayPosX + (1 - stepX) / 2) / rayDirX) * rayDirY;
+				wallX = rayPosY + ((mapX - rayPosX + ((1 - stepX) >> 1)) / rayDirX) * rayDirY;
 			wallX -= floor(wallX);
 
 			//Calculates x coordinate of texture
@@ -149,12 +149,10 @@ void renderWalls () {
 			//TODO: one line of pixels is cut off from bottom of screen. end + 1 causes artifact 
 			//	on line of pixels on bottom of texture
 			for (int y = start; y < end; y++) {
-				//Uses integers to avoid floating point arithmetic
-				int textureY = (((y * 256 - SCREEN_HEIGHT * 128 + wallHeight * 128) 
-					* TEXTURE_SIZE) / wallHeight) / 256;
+				//Uses integers to avoid floating point arithmetic.  This function takes ~50% of frame execution time
+				int textureY = ((((y << 1) - SCREEN_HEIGHT + wallHeight) << TEXTURE_SIZE_BINARY) / wallHeight) >> 1;
 
 				//Pick color from pixel array
-				//Uint32 color = getPixel(textureSource[textureIndex], textureX, textureY);
 				Uint32 color = pixelArray[textureIndex][textureX][textureY];
 
 				//Darken colors on one side of wall, gives a lit effect
