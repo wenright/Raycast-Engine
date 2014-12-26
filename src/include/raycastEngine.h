@@ -27,7 +27,13 @@ double speed = 5.0, rotateSpeedX = 0.0045, rotateSpeedY = 1.5;
 SDL_Window* window;
 
 //The surface contained by the window
-SDL_Surface* screen;
+SDL_Renderer* renderer;
+
+//The texture that we will be streaming pixels to
+SDL_Texture* texture;
+
+//The pixel array that is used as a buffer for the texture
+Uint32 pixelBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 //The image we will load and show on the screen
 SDL_Surface* textureSource[NUM_TEXTURES];

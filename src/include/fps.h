@@ -15,4 +15,6 @@ TTF_Font* font;
 
 double calcFPS ();
 
+void drawFPSToRenderer ();
+
 #endif

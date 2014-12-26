@@ -13,7 +13,7 @@ int main(int argc, char* args[]) {
 
 		renderWalls ();
 
-		SDL_UpdateWindowSurface (window);
+		updateTexture ();
 
 		movePlayer (calcFPS ());
 	}

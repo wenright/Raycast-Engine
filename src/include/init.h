@@ -1,6 +1,7 @@
 #ifndef INIT_H_INCLUDED
 #define INIT_H_INCLUDED
 
+#include <SDL2/SDL.h>
 #include "variables.h"
 #include "draw.h"
 

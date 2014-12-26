@@ -2,23 +2,21 @@
 
 void renderSky () {
 	//Clear the screen
-	SDL_FillRect(screen, NULL, RGB_Grey);
+	drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, RGB_SkyBlue);
 }
 
 void renderFloor () {
-	SDL_Rect r;
-	r.x = 0;
-	r.y = MIDDLE_Y + posZ;
-	r.w = SCREEN_WIDTH;
-	r.h = MIDDLE_Y - posZ + 1;
-	SDL_FillRect(screen, &r, RGB_Grey);
+	if (posZ + MIDDLE_Y < 0)
+		drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, RGB_Grey);
+	else
+		drawRect(0, MIDDLE_Y + posZ, SCREEN_WIDTH, MIDDLE_Y - posZ, RGB_Grey);
 }
 
 // ~85% of execution time spent here
 void renderWalls () {
 	//For each pixel on the x axis
 	for (int x = 0; x < SCREEN_WIDTH; ++x) {
-		double screenCoordinate = 2 * x / (double)SCREEN_WIDTH - 1;
+		double screenCoordinate = (x << 1) / (double)SCREEN_WIDTH - 1;
 		double rayPosX = posX;
 		double rayPosY = posY;
 		double rayDirX = dirX + planeX * screenCoordinate;
@@ -40,9 +38,6 @@ void renderWalls () {
 		//Direction to step (+1 or -1)
 		int stepX;
 		int stepY;
-
-		//If a wall was hit
-		int hit = false;
 
 		//north south, or east west?
 		int nsWall = false;
@@ -66,7 +61,7 @@ void renderWalls () {
 		}
 
 		//DDA
-		while (!hit) {
+		while (!worldMap[mapX][mapY]) {
 			//Jump to next square
 			if (sideDistX < sideDistY) {
 				sideDistX += deltaX;
@@ -81,9 +76,6 @@ void renderWalls () {
 
 			if (mapX > MAP_WIDTH || mapY > MAP_HEIGHT)
 				return;
-
-			if (worldMap[mapX][mapY] > 0)
-				hit = true;
 		}
 
 		//Calculate distance to camera
@@ -102,9 +94,9 @@ void renderWalls () {
 
 		int end = wallHeight / 2 + SCREEN_HEIGHT / 2;
 		if (end > SCREEN_HEIGHT - posZ)
-			end = SCREEN_HEIGHT - posZ - 1;
+			end = SCREEN_HEIGHT - posZ;
 
-		if (!textured) {
+		#if !textured
 			//Renders single colors
 			Uint32 color;
 			switch(worldMap[mapX][mapY]) {
@@ -120,9 +112,16 @@ void renderWalls () {
 				color = color / 2;
 
 			//Draw vertical line
-			drawLine (x, start, end, color);
-		}
-		else {
+			int y1 = start + posZ;
+			if (y1 < 0)
+				y1 = 0;
+
+			int y2 = end + posZ;
+			if (y2 < 0)
+				y2 = 0;
+
+			drawLine (x, y1, y2, color);
+		#else
 			//Calculates how far along the wall this ray has hit (for use w/ texture)
 			double wallX = 0.0;
 			if (nsWall)
@@ -139,32 +138,43 @@ void renderWalls () {
 			///Select texture from zero indexed array
 			int textureIndex = worldMap[mapX][mapY] - 1;
 
-			//Lock surface so we may view it
-			SDL_LockSurface(textureSource[textureIndex]);
-
-			//Retrieve array of pixels from the texture that we are using
-			Uint32 *index = (Uint32 *)textureSource[textureIndex]->pixels;
+			//Calculate brightness of this strip of pixels
+			double brightness = wallDist / 2;
 
 			//For all of the pixels in the Y direction
-			//TODO: one line of pixels is cut off from bottom of screen. end + 1 causes artifact 
-			//	on line of pixels on bottom of texture
-			for (int y = start; y < end; y++) {
-				//Uses integers to avoid floating point arithmetic.  This function takes ~50% of frame execution time
+			for (int y = start; y < end; ++y) {
+				//Uses integers to avoid floating point arithmetic
 				int textureY = ((((y << 1) - SCREEN_HEIGHT + wallHeight) << TEXTURE_SIZE_BINARY) / wallHeight) >> 1;
 
 				//Pick color from pixel array
 				Uint32 color = pixelArray[textureIndex][textureX][textureY];
 
-				//Darken colors on one side of wall, gives a lit effect
-				if (nsWall)
-					color = (color >> 1) & 8355711;
+				//Seperate the colors
+				int red = (color >> 16)	& 0x0FF;
+				int green = (color >> 8)& 0x0FF;
+				int blue = (color)		& 0x0FF;
+
+				//Modify the colors
+				if (brightness > 1) {
+					red /= brightness;
+					green /= brightness;
+					blue /= brightness;
+				}
+
+				//Recombine the colors
+				color = ((red & 0x0ff) << 16) | ((green & 0x0ff)<<8) | (blue & 0x0ff);
 
 				//Draw the individual pixel. May be faster if a buffer is used
 				drawPoint(x, y + posZ, color);
 			}
-
-			//Unlock the previously locked fram
-			SDL_UnlockSurface(textureSource[textureIndex]);
-		}
+		#endif
 	}
+}
+
+void updateTexture () {
+	SDL_UpdateTexture(texture, NULL, pixelBuffer, SCREEN_WIDTH * 4);
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	drawFPSToRenderer();
+	SDL_RenderPresent(renderer);
 }

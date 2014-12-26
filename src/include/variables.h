@@ -15,8 +15,11 @@
 #define true 1
 #define false 0
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define maxFPS 60
+#define maxTicks 1000 / maxFPS
+
+#define SCREEN_WIDTH 720
+#define SCREEN_HEIGHT 400
 
 #define MIDDLE_X SCREEN_WIDTH / 2
 #define MIDDLE_Y SCREEN_HEIGHT / 2
@@ -50,7 +53,13 @@ extern double speed, rotateSpeedX, rotateSpeedY;
 extern SDL_Window* window;
 
 //The surface contained by the window
-extern SDL_Surface* screen;
+extern SDL_Renderer* renderer;
+
+//The texture that we will be streaming pixels to
+extern SDL_Texture* texture;
+
+//The pixel array that is used as a buffer for the texture
+extern Uint32 pixelBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 //The image we will load and show on the screen
 extern SDL_Surface* textureSource[NUM_TEXTURES];

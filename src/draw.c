@@ -1,22 +1,19 @@
 #include "include/draw.h"
 
-// ~14% of run time is spent in this function
 void drawPoint (Uint32 x, Uint32 y, Uint32 color) {
-	SDL_Rect r;
-	r.x = x;
-	r.y = y;
-	r.w = 1;
-	r.h = 1;
-	SDL_FillRect(screen, &r, color);
+	if (x > SCREEN_WIDTH | y > SCREEN_HEIGHT)	return;
+	pixelBuffer[y][x] = color;
 }
 
 void drawLine (Uint32 x, Uint32 y1, Uint32 y2, Uint32 color) {
-	SDL_Rect r;
-	r.x = x;
-	r.y = y1;
-	r.w = 1;
-	r.h = y2 - y1;
-	SDL_FillRect(screen, &r, color);
+	for (int i = y1; i < y2; i++)
+		pixelBuffer[i][x] = color;
+}
+
+void drawRect (Uint32 x, Uint32 y, Uint32 w, Uint32 h, Uint32 color) {
+	for (int i = x; i < x + w; i++)
+		for (int j = y; j < y + h; j++)
+			pixelBuffer[j][i] = color;
 }
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y) {
